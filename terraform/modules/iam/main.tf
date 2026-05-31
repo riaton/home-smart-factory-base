@@ -237,11 +237,14 @@ data "aws_iam_policy_document" "lambda_batch_restart" {
     resources = [local.batch_task_def_arn]
   }
 
-  # ecs:RunTask 時に ECS がタスクロールを引き受けるために必要
+  # ecs:RunTask 時に ECS がタスクロールと実行ロールを引き受けるために必要
   statement {
-    effect    = "Allow"
-    actions   = ["iam:PassRole"]
-    resources = [aws_iam_role.ecs_batch.arn]
+    effect  = "Allow"
+    actions = ["iam:PassRole"]
+    resources = [
+      aws_iam_role.ecs_batch.arn,
+      aws_iam_role.execution.arn,
+    ]
   }
 
   statement {
@@ -292,11 +295,14 @@ data "aws_iam_policy_document" "eventbridge_ecs" {
     resources = [local.batch_task_def_arn]
   }
 
-  # ecs:RunTask 時に ECS がタスクロールを引き受けるために必要
+  # ecs:RunTask 時に ECS がタスクロールと実行ロールを引き受けるために必要
   statement {
-    effect    = "Allow"
-    actions   = ["iam:PassRole"]
-    resources = [aws_iam_role.ecs_batch.arn]
+    effect  = "Allow"
+    actions = ["iam:PassRole"]
+    resources = [
+      aws_iam_role.ecs_batch.arn,
+      aws_iam_role.execution.arn,
+    ]
   }
 }
 
