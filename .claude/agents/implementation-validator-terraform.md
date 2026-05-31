@@ -122,7 +122,33 @@ model: sonnet
 - `terraform/envs/prod/` のルートモジュールの確認
 - モジュール間の依存関係とデータフローの理解
 
-### ステップ3: 検証ツールの実行
+### ステップ3: Terraform MCPによるレジストリ照合
+
+Terraform MCPツールを使い、実装をレジストリの最新情報と照合します:
+
+```
+# 1. プロバイダーバージョンの確認
+# versions.tf に記載された aws provider バージョンを特定し、最新と比較する
+mcp__terraform__get_latest_provider_version(provider_name="aws")
+
+# 2. プロバイダー詳細でリソース属性の正しさを確認
+# レビュー対象のリソース（例: aws_ecs_service）の定義をレジストリで照合する
+mcp__terraform__get_provider_capabilities(provider_name="aws", provider_version="<versions.tfのバージョン>")
+mcp__terraform__get_provider_details(provider_name="aws", resource_type="<対象リソース>")
+
+# 3. 公式モジュールの存在確認
+# 自前実装しているリソース群をPublicモジュールで代替できないか調べる
+mcp__terraform__search_modules(query="<モジュール名>", provider="aws")
+mcp__terraform__get_module_details(module_id="<モジュールID>")
+```
+
+**MCPによる照合観点**:
+- [ ] `versions.tf` のプロバイダーバージョンが最新か（メジャーバージョン差異があれば警告）
+- [ ] 実装しているリソース属性がレジストリ定義と一致しているか（deprecated属性の使用がないか）
+- [ ] 自前実装をPublicモジュールに置き換えることで品質・保守性が向上するか
+- [ ] Terraform MCPが利用不可の場合はスキップし、その旨を報告に明記する
+
+### ステップ4: 検証ツールの実行
 
 以下のコマンドを順番に実行します:
 
@@ -137,11 +163,11 @@ terraform validate
 terraform test -filter=tests/
 ```
 
-### ステップ4: 各観点での検証
+### ステップ5: 各観点での検証
 
 上記5つの観点（スペック準拠・コード品質・セキュリティ・ステート管理・コスト効率）から検証します。
 
-### ステップ5: 検証結果の報告
+### ステップ6: 検証結果の報告
 
 具体的な検証結果を以下の形式で報告します:
 
@@ -205,6 +231,12 @@ terraform test -filter=tests/
 **terraform fmt -check**: [パス/失敗]
 **terraform validate**: [パス/失敗]
 **terraform test**: [パス数/失敗数]
+
+### Terraform MCPレジストリ照合結果
+
+**プロバイダーバージョン**: 実装=[versions.tfのバージョン] / 最新=[MCPで確認した最新バージョン] / [最新/要更新/MCP利用不可]
+**deprecated属性**: [なし/あり（詳細）/MCP利用不可]
+**Publicモジュール代替**: [なし/提案あり（詳細）/MCP利用不可]
 
 ### スペックとの相違点
 

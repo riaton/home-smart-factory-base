@@ -329,12 +329,12 @@ ECSバッチが生成する前日分集計レポート。**保持期間: 1年**
 
 | 削除順 | テーブル | 削除方式 | 理由 |
 |---|---|---|---|
-| 1 | iot_data | アプリ層（device_id WHERE句） | device_idはvarcharのためDBカスケード不可 |
-| 2 | anomaly_logs | アプリ層（device_id WHERE句） | 同上 |
-| 3 | report_downloads | DB CASCADE（user_id FK） | - |
-| 4 | daily_reports | DB CASCADE（user_id FK） | - |
-| 5 | anomaly_thresholds | DB CASCADE（user_id FK） | - |
-| 6 | devices | DB CASCADE（user_id FK） | - |
+| 1 | report_downloads | アプリ層（user_id WHERE句） | daily_reports.id への FK があるため daily_reports より先に削除 |
+| 2 | daily_reports | アプリ層（user_id WHERE句） | - |
+| 3 | anomaly_logs | アプリ層（user_id WHERE句） | - |
+| 4 | anomaly_thresholds | アプリ層（user_id WHERE句） | - |
+| 5 | iot_data | アプリ層（user_id WHERE句） | - |
+| 6 | devices | アプリ層（user_id WHERE句） | - |
 | 7 | users | 本体削除 | - |
 
 ## 4.2 デバイス削除時
