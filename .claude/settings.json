@@ -1,8 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Skill(steering)",
-      "Skill(development-guidelines-terraform)"
+      "Skill(development-guideline-terraform)",
+      "Skill(terraform-test-patterns)"
     ],
     "deny": [],
     "ask": []
