@@ -13,11 +13,11 @@ model: sonnet
 実装されたTerraformコードが以下の基準を満たしているか検証します:
 1. 各種仕様書(インフラ定義書・要件定義書・基本設計書)との整合性
    - 仕様書は以下に配置されています
-     - 要件定義書 → `docs/spec-requirements/機能要件.md`
-     - インフラ定義書 → `docs/basic-design/インフラ定義書.md`
-     - システム構成図 → `docs/basic-design/システム構成図.md`
-     - 基本設計書（API設計書） → `docs/basic-design/API設計書.md`
-     - 基本設計書（DB設計書） → `docs/basic-design/DB設計書.md`
+     - 要件定義書 → `docs/spec-requirements/functional-requirements.md`
+     - インフラ定義書 → `docs/basic-design/infrastructure-design.md`
+     - システム構成図 → `docs/basic-design/system-architecture.md`
+     - 基本設計書（API設計書） → `docs/basic-design/api-design.md`
+     - 基本設計書（DB設計書） → `docs/basic-design/db-design.md`
 2. コード品質（Terraformコーディング規約、ベストプラクティス）
    - コーディング規約は `.claude/skills/development-guideline-terraform/guides/implementation-guide.md` を参照
 3. セキュリティ（IAM最小権限・SG最小開放・機密情報管理）
@@ -111,9 +111,9 @@ model: sonnet
 ### ステップ1: スペックの理解
 
 関連するスペックドキュメントを読み込みます:
-- `docs/spec-requirements/機能要件.md`
-- `docs/basic-design/インフラ定義書.md`
-- `docs/basic-design/システム構成図.md`
+- `docs/spec-requirements/functional-requirements.md`
+- `docs/basic-design/infrastructure-design.md`
+- `docs/basic-design/system-architecture.md`
 
 ### ステップ2: Terraformコードの分析
 

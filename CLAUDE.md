@@ -9,6 +9,7 @@ Raspberry PiのセンサーデータをAWS IoT Core経由で収集し、ECS上�
 
 - **IaC**: Terraform ~> 1.15.0
 - **クラウド**: AWS ap-northeast-1（AWSプロバイダー ~> 6.0）
+- **状態管理**: S3（リモートバックエンド、暗号化有効、DynamoDBロックなし）
 
 ---
 
@@ -29,7 +30,22 @@ Raspberry PiのセンサーデータをAWS IoT Core経由で収集し、ECS上�
 
 ---
 
+## Terraformディレクトリ構造
+
+- `envs/prod/` — 本番環境ルートモジュール
+- `envs/prod/versions.tf` — Terraform・プロバイダーバージョン固定、S3バックエンド設定
+- `envs/prod/locals.tf` — 共通タグ・名前プレフィックス
+- `envs/prod/variables.tf` — 入力変数
+- `envs/prod/main.tf` — モジュール呼び出し
+- `envs/prod/outputs.tf` — 出力値
+- `envs/prod/tests/` — terraform test ファイル（`*.tftest.hcl`）
+- `modules/<name>/main.tf` — リソース定義
+- `modules/<name>/variables.tf` — 入力変数
+- `modules/<name>/outputs.tf` — 出力値
+- モジュール一覧: `vpc` / `iam` / `ecr` / `rds` / `elasticache` / `sqs` / `sns` / `iot` / `alb` / `ecs` / `lambda` / `eventbridge` / `cloudwatch`
+
 ## 行動規範
+
 ### 基本的な行動規範
 - 3ステップ以上のタスクは必ずPlanモードで開始する
 - 変更は必要な箇所のみ。影響範囲を最小化する
